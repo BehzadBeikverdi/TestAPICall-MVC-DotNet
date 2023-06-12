@@ -1,0 +1,109 @@
+﻿@model IEnumerable<MovieModel>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <div class="text-center">
+        <h1 class="display-4">Movie Fan</h1>
+        <div class="form-horizontal">
+            <div class="form-group">
+                <table class="table table-responsive" style="width:100%">
+                    <tr>
+                        <td>
+                            <h4>Movie Name</h4>
+                        </td>
+                        <td>
+                            <h4>Movie Director</h4>
+                        </td>
+                        <td>
+                            <h4>Release Date</h4>
+                        </td>
+                        <td>
+                            <h4>Movie Duration</h4>
+                        </td>
+                        <td>
+                            <h4>Movie Actors</h4>
+                        </td>
+                        <td>
+                            <h4>Movie Description</h4>
+                        </td>
+                    </tr>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.MovieName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.MovieDirector)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ReleaseDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.MovieDuration)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.MovieActors)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.MovieDescription)
+                            </td>
+                            @*<td>
+                                    @Html.DisplayFor(modelItem => item.MovieIMDB.ToString())
+                                </td>*@
+                        </tr>
+                    }
+                </table>
+                <form>
+                    <div class="form-group ">
+                        <input type="text" class="form-control" id="movieName" placeholder="Enter Movie Name" required />
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="movieDirector" placeholder="Enter Movie Director" required />
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="releaseDate" placeholder="Enter Release Date" required />
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="movieDuration" placeholder="Enter Movie Duration" required />
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="movieActors" placeholder="Enter Movie Actors" required />
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="movieDescription" placeholder="Enter Movie Description" required />
+                    </div>
+                    <button type="submit" class="btn btn-primary" onclick="ClickToSubmit()">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<script>
+    let Baseurl = "https://localhost:44305/api/movie";
+   
+    async function ClickToSubmit() {
+
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", Baseurl);
+        xhr.setRequestHeader("Content-Type", "application/json; charset=UTF-8", "Access-Control-Allow-Origin: *", "Access-Control-Allow-Origin: http://www.example.com");
+        const body = JSON.stringify({
+            movieName: document.getElementById("movieName").value,
+            movieDirector: document.getElementById("movieDirector").value,
+            releaseDate: document.getElementById("releaseDate").value,
+            movieDuration: document.getElementById("movieDuration").value,
+            movieActors: document.getElementById("movieActors").value,
+            movieDescription: document.getElementById("movieDescription").value,
+            movieIMDB: 9.3,
+        });
+        xhr.send(body);
+
+        document.write("sent(body)");
+    }
+
+</script>
