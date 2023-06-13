@@ -1,4 +1,5 @@
-﻿@model IEnumerable<MovieModel>
+﻿@model MovieViewModel
+
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -29,7 +30,7 @@
                             <h4>Movie Description</h4>
                         </td>
                     </tr>
-                    @foreach (var item in Model)
+                    @foreach (var item in Model.MovieModelList)
                     {
                         <tr>
                             <td>
@@ -50,60 +51,92 @@
                             <td>
                                 @Html.DisplayFor(modelItem => item.MovieDescription)
                             </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.MovieDescription)
+                            </td>
                             @*<td>
                                     @Html.DisplayFor(modelItem => item.MovieIMDB.ToString())
                                 </td>*@
                         </tr>
                     }
                 </table>
-                <form>
-                    <div class="form-group ">
-                        <input type="text" class="form-control" id="movieName" placeholder="Enter Movie Name" required />
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    @Html.LabelFor(model => model.MovieModelSingle.MovieName, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.MovieModelSingle.MovieName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.MovieModelSingle.MovieName, "", new { @class = "text-danger" })
                     </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control" id="movieDirector" placeholder="Enter Movie Director" required />
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.MovieModelSingle.MovieDirector, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.MovieModelSingle.MovieDirector, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.MovieModelSingle.MovieDirector, "", new { @class = "text-danger" })
                     </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control" id="releaseDate" placeholder="Enter Release Date" required />
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.MovieModelSingle.ReleaseDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.MovieModelSingle.ReleaseDate, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.MovieModelSingle.ReleaseDate, "", new { @class = "text-danger" })
                     </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control" id="movieDuration" placeholder="Enter Movie Duration" required />
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.MovieModelSingle.MovieDuration, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.MovieModelSingle.MovieDuration, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.MovieModelSingle.MovieDuration, "", new { @class = "text-danger" })
                     </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control" id="movieActors" placeholder="Enter Movie Actors" required />
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.MovieModelSingle.MovieActors, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.MovieModelSingle.MovieActors, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.MovieModelSingle.MovieActors, "", new { @class = "text-danger" })
                     </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control" id="movieDescription" placeholder="Enter Movie Description" required />
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.MovieModelSingle.MovieDescription, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.MovieModelSingle.MovieDescription, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.MovieModelSingle.MovieDescription, "", new { @class = "text-danger" })
                     </div>
-                    <button type="submit" class="btn btn-primary" onclick="ClickToSubmit()">Submit</button>
-                </form>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.MovieModelSingle.MovieIMDB, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.MovieModelSingle.MovieIMDB, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.MovieModelSingle.MovieIMDB, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Create" class="btn btn-default" />
+                    </div>
+                </div>
+            </div>
+                }
+
+                <div>
+                    @Html.ActionLink("Back to List", "Index")
+                </div>
             </div>
         </div>
     </div>
 
 </div>
 
-
-<script>
-    let Baseurl = "https://localhost:44305/api/movie";
-   
-    async function ClickToSubmit() {
-
-        const xhr = new XMLHttpRequest();
-        xhr.open("POST", Baseurl);
-        xhr.setRequestHeader("Content-Type", "application/json; charset=UTF-8", "Access-Control-Allow-Origin: *", "Access-Control-Allow-Origin: http://www.example.com");
-        const body = JSON.stringify({
-            movieName: document.getElementById("movieName").value,
-            movieDirector: document.getElementById("movieDirector").value,
-            releaseDate: document.getElementById("releaseDate").value,
-            movieDuration: document.getElementById("movieDuration").value,
-            movieActors: document.getElementById("movieActors").value,
-            movieDescription: document.getElementById("movieDescription").value,
-            movieIMDB: 9.3,
-        });
-        xhr.send(body);
-
-        document.write("sent(body)");
-    }
-
-</script>

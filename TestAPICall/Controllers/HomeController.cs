@@ -24,6 +24,7 @@ namespace TestAPICall.Controllers
         public async Task<IActionResult> Index()
         {
             List<MovieModel> movieModels = new List<MovieModel>();
+            MovieViewModel mvm = new MovieViewModel();
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(Baseurl);
@@ -35,9 +36,35 @@ namespace TestAPICall.Controllers
                     var Response = Res.Content.ReadAsStringAsync().Result;
                     movieModels = JsonConvert.DeserializeObject<List<MovieModel>>(Response);
                 }
-                return View(movieModels);
+
+                mvm.MovieModelList = movieModels;
+
+                return View(mvm);
             }
         }
+
+  
+        [HttpPost]
+        public ActionResult Index(MovieViewModel movie)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(Baseurl);
+                var postTask = client.PostAsJsonAsync<MovieModel>("movie", movie.MovieModelSingle);
+                postTask.Wait();
+
+                var result = postTask.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("Index");
+                }
+            }
+
+            ModelState.AddModelError(string.Empty, "Server Error.");
+
+            return View(movie.MovieModelSingle);
+        }
+
 
         public IActionResult Privacy()
         {
