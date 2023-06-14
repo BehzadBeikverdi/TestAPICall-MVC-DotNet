@@ -21,6 +21,7 @@ namespace TestAPICall.Controllers
             _logger = logger;
         }
 
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             List<MovieModel> movieModels = new List<MovieModel>();
