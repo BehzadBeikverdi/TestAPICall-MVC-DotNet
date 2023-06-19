@@ -14,15 +14,14 @@ namespace TestAPICall.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        string Baseurl = "https://localhost:44305/api/";
+        string Baseurl = "https://localhost:44305/api/movie/";
         /*     string Baseurl = "https://6110bf5bc38a0900171f0d86.mockapi.io/api/v2/";*/
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> MovieList()
         {
             List<MovieModel> movieModels = new List<MovieModel>();
             MovieViewModel mvm = new MovieViewModel();
@@ -31,7 +30,7 @@ namespace TestAPICall.Controllers
                 client.BaseAddress = new Uri(Baseurl);
                 client.DefaultRequestHeaders.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage Res = await client.GetAsync("movie");
+                HttpResponseMessage Res = await client.GetAsync("GetMovies");
                 if (Res.IsSuccessStatusCode)
                 {
                     var Response = Res.Content.ReadAsStringAsync().Result;
@@ -44,30 +43,86 @@ namespace TestAPICall.Controllers
             }
         }
 
-  
-        [HttpPost]
-        public ActionResult Index(MovieViewModel movie)
+        public async Task<IActionResult> GetMovieById(int id)
+        {
+            var movieModel = new MovieModel();
+            MovieViewModel mvm = new MovieViewModel();
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(Baseurl);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage Res = await client.GetAsync($"/api/Movie/GetMovieById/{id}");
+                if (Res.IsSuccessStatusCode)
+                {
+                    var Response = Res.Content.ReadAsStringAsync().Result;
+                    movieModel = JsonConvert.DeserializeObject<MovieModel>(Response);
+                }
+
+                mvm.MovieModelSingle = movieModel;
+
+                return View("EditMoviePage", mvm);
+            }
+        }
+
+        public ActionResult CreateMovie(MovieViewModel movie)
         {
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(Baseurl);
-                var postTask = client.PostAsJsonAsync<MovieModel>("movie", movie.MovieModelSingle);
+                var postTask = client.PostAsJsonAsync<MovieModel>("AddMovie", movie.MovieModelSingle);
                 postTask.Wait();
 
                 var result = postTask.Result;
                 if (result.IsSuccessStatusCode)
                 {
-                    return RedirectToAction("Index");
+                    return RedirectToAction("MovieList");
                 }
             }
 
-            ModelState.AddModelError(string.Empty, "Server Error.");
+            return RedirectToAction("MovieList");
+        }
 
-            return View(movie.MovieModelSingle);
+       
+        public ActionResult EditMovie(MovieViewModel movie, int id)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(Baseurl);
+                var ss = id;
+                var putTask = client.PostAsJsonAsync<MovieModel>($"EditMovie?id={id}", movie.MovieModelSingle);
+                putTask.Wait();
+
+                var result = putTask.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("MovieList");
+                }
+            }
+
+            return RedirectToAction("MovieList");
         }
 
 
-        public IActionResult Privacy()
+        public ActionResult DeleteMovie(int id)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(Baseurl);
+                var deleteTask = client.DeleteAsync($"DeleteMovieById/{id}");
+                deleteTask.Wait();
+
+                var result = deleteTask.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("MovieList");
+                }
+            }
+
+            return RedirectToAction("MovieList");
+        }
+
+        public IActionResult CreateMoviePage()
         {
             return View();
         }

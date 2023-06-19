@@ -1,0 +1,79 @@
+﻿@model MovieViewModel
+
+@{
+    ViewData["Title"] = "Edit Movie Page";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<p>Edit Movie Details</p>
+
+<div class="text-center">
+    @using (Html.BeginForm())
+    {
+        <form class="row g-3 needs-validation">
+            <hr />
+            <div class="form-group">
+                <div class="col-md-14">
+                    <input asp-for="MovieModelSingle.MovieName" class="form-control" , placeholder="Movie Name" required />
+                    <span asp-validation-for="MovieModelSingle.MovieName" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-14">
+                    <input asp-for="MovieModelSingle.MovieDirector" class="form-control" , placeholder="Movie Director" required />
+                    <span asp-validation-for="MovieModelSingle.MovieDirector" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-14">
+                    <input asp-for="MovieModelSingle.ReleaseDate" class="form-control" , placeholder="Release Date" required />
+                    <span asp-validation-for="MovieModelSingle.ReleaseDate" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-14">
+                    <input asp-for="MovieModelSingle.MovieDuration" class="form-control" , placeholder="Movie Duration" required />
+                    <span asp-validation-for="MovieModelSingle.MovieDuration" class="text-danger"></span>
+
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-14">
+                    <input asp-for="MovieModelSingle.MovieActors" class="form-control" , placeholder="Movie Actors" required />
+                    <span asp-validation-for="MovieModelSingle.MovieActors" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-14">
+                    <textarea asp-for="MovieModelSingle.MovieDescription" class="form-control" placeholder="Movie Description" rows="5" required maxlength="1000"></textarea>
+                    <span asp-validation-for="MovieModelSingle.MovieDescription" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-14">
+                    <input asp-for="MovieModelSingle.MovieIMDB" class="form-control" , placeholder="Movie IMDB" required pattern="^[0-9-.]+([\.,][0-9]+)?" />
+                    <span asp-validation-for="MovieModelSingle.MovieIMDB" class="text-danger" , style="display: block; text-align: left;">Enter Number!</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-14">
+                    <button asp-controller="Home" asp-action="EditMovie" asp-route-id="1" type="submit" class="btn btn-primary">Edit</button>
+                </div>
+            </div>
+    
+            </form>
+    }
+
+
+    <div class="form-group">
+        <a class="btn btn-outline-secondary" asp-area="" asp-controller="Home" asp-action="MovieList">Back to Movie List</a>
+    </div>
+</div>

@@ -8,6 +8,8 @@ namespace TestAPICall.Models
     public class MovieViewModel
     {
         public List<MovieModel> MovieModelList { get; set; }
+
+        public IEnumerable<MovieModel> MovieModelEnumerable { get; set; }
         public MovieModel MovieModelSingle { get; set; }
     }
 }

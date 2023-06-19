@@ -1,0 +1,112 @@
+﻿@model MovieViewModel
+
+@{
+    ViewData["Title"] = "Movie List Page";
+}
+
+<div class="text-center">
+    <div class="text-center">
+        <h2 class="display-4">Movie Fan</h2>
+        <div class="form-horizontal">
+            <div class="form-group">
+                @using (Html.BeginForm())
+                {
+                <form asp-controller="Home" asp-action="MovieList">
+                    <table class="table table-responsive align-content-around table-bordered" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <h5>#</h5>
+                                </th>
+                                <th>
+                                    <h5>Unique Id</h5>
+                                </th>
+                                <th>
+                                    <h5>Name</h5>
+                                </th>
+                                <th>
+                                    <h5>Director</h5>
+                                </th>
+                                <th>
+                                    <h5>Release Date</h5>
+                                </th>
+                                <th>
+                                    <h5>Duration</h5>
+                                </th>
+                                <th>
+                                    <h5>Actors</h5>
+                                </th>
+                                <th>
+                                    <h5>Description</h5>
+                                </th>
+                                <th>
+                                    <h5>IMDB</h5>
+                                </th>
+                                <th>
+                                    <h5>Feature</h5>
+                                </th>
+                            </tr>
+                        </thead>
+                        @foreach (var item in Model.MovieModelList)
+                        {
+                            var index = Model.MovieModelList.IndexOf(item) + 1;
+
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => index)
+                                </td>
+                                <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MovieName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MovieDirector)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ReleaseDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MovieDuration)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MovieActors)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MovieDescription)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MovieIMDB)
+                    </td>
+                                <td>
+                                    <a asp-controller="Home" asp-action="GetMovieById" asp-route-id="@item.Id"
+                                       class="btn btn-outline-info mx-2" style="margin:5px">
+                                        Edit
+                                    </a>
+                                    <a asp-controller="Home" asp-action="DeleteMovie" asp-route-id="@item.Id"
+                                       class="btn btn-outline-danger mx-2" style="margin:5px">
+                                        Delete
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </table>
+
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-14">
+                            <button type="submit" class="btn btn-outline-secondary" asp-controller="Home" asp-action="CreateMoviePage">Add Movie to the List</button>
+                        </div>
+                    </div>
+                </form>
+                }
+
+
+               
+            </div>
+        </div>
+    </div>
+
+</div>
+
