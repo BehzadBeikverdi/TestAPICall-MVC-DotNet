@@ -64,12 +64,20 @@
             </div>
 
             <div class="form-group">
-                <div class="col-md-offset-2 col-md-14">
-                    <button asp-controller="Home" asp-action="EditMovie" asp-route-id="1" type="submit" class="btn btn-primary">Edit</button>
+                <div class="col-md-14">
+                    <input asp-for="MovieModelSingle.Id" class="form-control" , placeholder="Movie IMDB" required pattern="^[0-9-.]+([\.,][0-9]+)?" />
+                    <span asp-validation-for="MovieModelSingle.Id" class="text-danger" , style="display: block; text-align: left;">Enter Number!</span>
                 </div>
             </div>
-    
-            </form>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-14">
+                    <button asp-controller="Home" asp-action="EditMovie" asp-route-id="@Model.MovieModelSingle.Id" type="submit" class="btn btn-primary">Edit</button>
+                </div>
+
+            </div>
+
+        </form>
     }
 
 
